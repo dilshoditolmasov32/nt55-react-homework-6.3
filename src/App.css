@@ -1,0 +1,75 @@
+.app {
+  width: 100%;
+  background-color: rgba(255, 255, 204, 0.555);
+  max-width: 1300px;
+  margin: auto;
+  height: 200vh;
+  padding-top: 20px;
+}
+
+.form-user {
+  display: flex;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 85%;
+  margin: 50px auto;
+}
+
+table thead {
+  background-color: #28ff65;
+}
+
+td,
+th {
+  border: 1px solid #262121;
+  text-align: left;
+  padding: 8px;
+}
+
+tbody tr:nth-child(even) {
+  background-color: rgba(67, 219, 242, 0.656);
+}
+
+tbody tr:nth-child(odd) {
+  background-color: rgba(36, 218, 246, 0.766);
+}
+
+label {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.btn-add {
+  background-color: #0ef650;
+  color: red;
+  border: none;
+  padding: 10px;
+  font-size: 20px;
+  border-radius: 5px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+input {
+  outline: none;
+  padding: 10px 20px;
+  margin-right: 5px;
+  border: 2px solid #0ef650;
+  margin-top: 4px;
+  color: #121312;
+  font-size: 16px;
+  font-weight: 700;
+  border-radius: 5px;
+}
+
+input::placeholder {
+  color: #121312;
+  font-size: 16px;
+  font-weight: 700;
+}
