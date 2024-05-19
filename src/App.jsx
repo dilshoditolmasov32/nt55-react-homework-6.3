@@ -1,12 +1,13 @@
 import { useState } from "react";
 
-
 import "./App.css";
-
+// import ReactConfetti from "./components/ReactConfetti";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const App = () => {
   const [userData, setUserData] = useState([]);
-
+  const [search, setSearch] = useState("");
   const handleForm = (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
@@ -22,7 +23,7 @@ const App = () => {
     setUserData([...userData]);
 
     e.target.reset();
-    toast.success("New created user");
+    toast.success("New user created!");
   };
 
   return (
@@ -59,6 +60,13 @@ const App = () => {
         </button>
       </form>
 
+      <div className="InputSearch" onChange={(e) => setSearch(e.target.value)}>
+        <input type="search" name="search" id="search" placeholder="Search"
+        
+        />
+      
+      </div>
+
       <table>
         <thead>
           <tr>
@@ -70,19 +78,26 @@ const App = () => {
           </tr>
         </thead>
         <tbody>
-          {userData.map((user, index) => (
-            <tr key={index}>
-              <td>{index + 1}</td>
-              <td>{user.name}</td>
-              <td>{user.lastname}</td>
-              <td>{user.birthDate}</td>
-              <td>{user.tel}</td>
-            </tr>
-          ))}
+          {userData
+            ?.filter((item) => {
+              return search.toLocaleLowerCase() === ""
+                ? item
+                : item.name.toLocaleLowerCase().includes(search);
+            })
+            .map((user, index) => (
+              <tr key={index}>
+                <td>{index + 1}</td>
+                <td>{user.name}</td>
+                <td>{user.lastname}</td>
+                <td>{user.birthDate}</td>
+                <td>{user.tel}</td>
+              </tr>
+            ))}
         </tbody>
       </table>
+      {/* {confetty && <ReactConfetti />} */}
 
-     
+      <ToastContainer />
     </div>
   );
 };
