@@ -1,34 +1,37 @@
 import { useState } from "react";
-
+import { nanoid } from "nanoid";
 import "./App.css";
-// import ReactConfetti from "./components/ReactConfetti";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { MdDelete } from "react-icons/md";
 
 const App = () => {
   const [userData, setUserData] = useState([]);
+  const [form, setForm] = useState({});
   const [search, setSearch] = useState("");
-  const handleForm = (e) => {
-    e.preventDefault();
-    const formData = new FormData(e.target);
 
-    const user = {
-      name: formData.get("firstName"),
-      lastname: formData.get("lastName"),
-      birthDate: formData.get("birthDate"),
-      tel: formData.get("telNumber"),
-    };
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    let id = nanoid();
+    let payload = { ...form, id };
+    userData.push(payload);
+    setForm([...userData]);
+    event.target.reset();
+  };
 
-    userData.push(user);
-    setUserData([...userData]);
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setForm({ ...form, [name]: value });
+  };
 
-    e.target.reset();
-    toast.success("New user created!");
+  const deleteUser = (id) => {
+    const new_user = userData.filter((item) => item.id !== id);
+    setUserData([...new_user]);
   };
 
   return (
     <div className="app">
-      <form className="form-user" onSubmit={handleForm}>
+      <form className="form-user" onSubmit={handleSubmit}>
         <label htmlFor="firstName">
           First Name <br />
           <input
@@ -36,15 +39,29 @@ const App = () => {
             name="firstName"
             required
             placeholder="Dilshodbek"
+            onChange={handleChange}
           />
         </label>
         <label htmlFor="lastName">
           Last Name <br />
-          <input type="text" name="lastName" required placeholder="Itolmasov" />
+          <input
+            type="text"
+            name="lastName"
+            required
+            placeholder="Itolmasov"
+            onChange={handleChange}
+          />
         </label>
         <label htmlFor="birthDate">
-          Birth Date <br />
-          <input type="date" name="birthDate" required />
+          Age
+          <br />
+          <input
+            type="text"
+            name="birthDate"
+            placeholder="20"
+            className="ageInput"
+            onChange={handleChange}
+          />
         </label>
         <label htmlFor="telNumber">
           Phone Number <br />
@@ -53,6 +70,7 @@ const App = () => {
             name="telNumber"
             required
             placeholder="+998 (93) 571-14-42"
+            onChange={handleChange}
           />
         </label>
         <button type="submit" className="btn-add">
@@ -61,10 +79,12 @@ const App = () => {
       </form>
 
       <div className="InputSearch" onChange={(e) => setSearch(e.target.value)}>
-        <input type="search" name="search" id="search" placeholder="Search"
-        
+        <input
+          type="search"
+          name="search"
+          id="search"
+          placeholder="Search..."
         />
-      
       </div>
 
       <table>
@@ -73,8 +93,9 @@ const App = () => {
             <th> T/r</th>
             <th>First Name</th>
             <th>Last Name</th>
-            <th> Birth Date</th>
+            <th> Age</th>
             <th>Phone Number</th>
+            <th>Delete</th>
           </tr>
         </thead>
         <tbody>
@@ -82,15 +103,24 @@ const App = () => {
             ?.filter((item) => {
               return search.toLocaleLowerCase() === ""
                 ? item
-                : item.name.toLocaleLowerCase().includes(search);
+                : item.firstName.toLocaleLowerCase().includes(search) ||
+                    item.lastName.toLocaleLowerCase().includes(search);
             })
             .map((user, index) => (
-              <tr key={index}>
+              <tr key={user.id}>
                 <td>{index + 1}</td>
-                <td>{user.name}</td>
-                <td>{user.lastname}</td>
-                <td>{user.birthDate}</td>
-                <td>{user.tel}</td>
+                <td>{user.firstName}</td>
+                <td>{user.lastName}</td>
+                <td>{+user.birthDate}</td>
+                <td>{user.telNumber}</td>
+                <td>
+                  <button
+                    className="delete-btn"
+                    onClick={() => deleteUser(user.id)}
+                  >
+                    <MdDelete className="delete-icon" />
+                  </button>
+                </td>
               </tr>
             ))}
         </tbody>
